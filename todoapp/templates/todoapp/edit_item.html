@@ -1,0 +1,12 @@
+{% extends 'todoapp/base.html' %}
+{% block content %}
+
+<h2>Edit Item</h2>
+<form method="post" class="">
+{% csrf_token %}
+{{ form.as_p }}
+
+<button type="submit">Submit</button>
+
+</form>
+{% endblock content %}

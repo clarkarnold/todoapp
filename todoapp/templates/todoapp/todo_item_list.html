@@ -1,0 +1,52 @@
+{% extends 'todoapp/base.html'%}
+
+{% block content %}
+
+<br>
+<ul class='list-group'>
+{% for item in  items %}
+{% if item.completed %}
+<li class='list-group-item list-group-item-light'>
+{% else %}
+    {% if item.urgent %}
+        <li class='list-group-item list-group-item-danger'>
+    {% else %}
+        <li class='list-group-item list-group-item-primary'>
+    {% endif %}
+{% endif %}
+
+    {{ item.text }}
+
+        {% if item.published_recently and not item.completed %}
+            <span class="badge badge-info">New</span>
+        {% endif %}
+
+        <a class="btn btn-danger btn-sm float-right" href="{% url 'delete_item' pk=item.pk %}">X</a>
+        <a class="btn btn-dark btn-sm float-right" href="{% url 'edit_item' pk=item.pk %}">Edit</a> 
+        {% if not item.completed %}
+            <a class="btn btn-primary btn-sm float-right" href="{% url 'mark_completed' pk=item.pk %}">Done</a>
+        {% endif %}
+</li>
+{% endfor %}
+<li class='list-group-item'>
+<form action="new/" method="post">{% csrf_token %}
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input name="urgent" title="URGENT?" type="checkbox" required_id="id_urgent">
+            </div>
+        </div>
+        <input type="text" class="form-control" 
+        name="text" required_id="id_text" placeholder="New Item"
+        aria-label="New Item" aria-described-by="button-addon2"></input>
+        <div class="input-group-append">
+            <input id="button-addon2" type="submit" class="btn btn-sml btn-primary btn-sm" value="Submit">
+        </div>
+    </div>
+
+</form>
+</li>
+</ul>
+
+
+{% endblock %}
